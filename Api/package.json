@@ -1,0 +1,34 @@
+{
+  "name": "msg_api",
+  "version": "1.0.0",
+  "description": "Api used to create a web msg app",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "keywords": [
+    "msg",
+    "Node.js",
+    "JavaScript",
+    "Express",
+    "PostgreSQL"
+  ],
+  "author": "Hemerson Ballen",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "standard": "^17.1.2"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
+}
