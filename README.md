@@ -17,11 +17,10 @@ Un simple tablón de mensajes donde se podrán observar los mensajes escritos po
 
 ## Tecnologías utilizadas
 
-- **Frontend**: [React / Angular / Vue.js] (elige tu tecnología preferida)
+- **Frontend**: [React, TailwindCSS, Vite] (elige tu tecnología preferida)
 - **Backend**: Node.js con Express
 - **Base de datos**: MongoDB / PostgreSQL
 - **Autenticación**: JWT (JSON Web Tokens)
-- **Mensajería en tiempo real**: WebSockets (Socket.IO)
 
 ## Requisitos previos
 
