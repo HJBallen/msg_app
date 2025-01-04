@@ -14,7 +14,6 @@ Un simple tablón de mensajes donde se podrán observar los mensajes escritos po
 - Enviar y recibir mensajes en tiempo real.
 - Interfaz intuitiva y fácil de usar.
 - Historial de mensajes persistente.
-- Notificaciones para mensajes nuevos.
 
 ## Tecnologías utilizadas
 
