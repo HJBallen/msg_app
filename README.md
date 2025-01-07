@@ -2,11 +2,11 @@
 
 ## Descripción
 
-**App de Mensajes** es una aplicación sencilla diseñada para enviar y recibir mensajes entre usuarios. Ideal para aprender los conceptos básicos de desarrollo de aplicaciones de mensajería en tiempo real o como base para proyectos más complejos.
+**App de Mensajes** Es un tablón de mensajes donde se podrán observar los mensajes escritos por los distintos usuarios, creado usando **Node.JS**, **Express**, **Postgres** y **JWT Auth** para el BackEnd y **React.js**, **Vite** y **TailwindCSS** para el FrontEnd.
 
-**Message App** is a simple application designed to send and receive messages between users. Ideal for learning the basics of real-time messaging app development or as a foundation for more complex projects.
+**Message App** Is a message board where messages written by different users can be viewed, built using Node.JS, Express, Postgres, and JWT Auth for the BackEnd, and React.js, Vite, and TailwindCSS for the FrontEnd.
 
-Un simple tablón de mensajes donde se podrán observar los mensajes escritos por los distintos usuarios, creado usando **Node.JS**, **Express**, **Postgres** y **JWT Auth** para el BackEnd y **React.js**, **Vite** y **TailwindCSS** para el FrontEnd.
+
 
 ## Características
 
@@ -14,15 +14,13 @@ Un simple tablón de mensajes donde se podrán observar los mensajes escritos po
 - Enviar y recibir mensajes en tiempo real.
 - Interfaz intuitiva y fácil de usar.
 - Historial de mensajes persistente.
-- Notificaciones para mensajes nuevos.
 
 ## Tecnologías utilizadas
 
-- **Frontend**: [React / Angular / Vue.js] (elige tu tecnología preferida)
+- **Frontend**: [React, TailwindCSS, Vite] (elige tu tecnología preferida)
 - **Backend**: Node.js con Express
 - **Base de datos**: MongoDB / PostgreSQL
 - **Autenticación**: JWT (JSON Web Tokens)
-- **Mensajería en tiempo real**: WebSockets (Socket.IO)
 
 ## Requisitos previos
 
