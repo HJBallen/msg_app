@@ -6,7 +6,9 @@ export class MessageRepository {
   }
 
   async getList () {
-    const result = await this.pool.query('SELECT * FROM messages')
+    const result = await this.pool.query(`SELECT users.id as user_id, users.username, users.user_img, messages.body, messages.created_at, messages.updated_at
+    FROM users, messages 
+    WHERE (users.id = messages.userId)`)
     return result.rows
   }
 
@@ -59,9 +61,9 @@ export class MessageRepository {
   async getUserMessages (userId) {
     const query = `SELECT users.id as user_id, users.username, users.user_img, messages.body, messages.created_at, messages.updated_at 
     FROM users, messages 
-    WHERE (users.id = messages.userId)`
+    WHERE (users.id = messages.userId AND users.id = $1)`
 
-    const result = await this.pool.query(query)
+    const result = await this.pool.query(query, [userId])
     return result.rows
   }
 }
