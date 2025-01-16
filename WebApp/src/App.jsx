@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Board } from './Board'
+import { Board } from './Components/Board'
 import './App.css'
+import { Login } from './Components/Login'
+import { Register } from './Components/Register'
 
 function App() {
 
+
   return (
     <main className='flex justify-center items-center bg-slate-700 h-full'>
-      <Board/>
+      <Login/>
+      <Register/>
+      {
+      //<Board/>
+      }
     </main>
   )
 }
