@@ -1,10 +1,10 @@
 import { UserRepository } from '../Models/Repositorys/userRepository.js'
 
-const userService = new UserRepository()
+const userRepo = new UserRepository()
 
 export async function getUsers (req, res) {
   try {
-    res.status(200).json(await userService.getList())
+    res.status(200).json(await userRepo.getList())
   } catch (error) {
     console.error(error)
   }
@@ -13,7 +13,7 @@ export async function getUsers (req, res) {
 export async function getUserById (req, res) {
   try {
     const { id } = req.params
-    const user = await userService.getById(id)
+    const user = await userRepo.getById(id)
     console.log(user)
     res.status(200).json(user)
   } catch (error) {
@@ -24,7 +24,7 @@ export async function getUserById (req, res) {
 export async function createUser (req, res) {
   try {
     const { username, password, userImg } = req.body
-    const user = await userService.create({ username, password, userImg })
+    const user = await userRepo.create({ username, password, userImg })
     res.status(201).json(user)
   } catch (error) {
     console.error(error.message, error.cause.status)
