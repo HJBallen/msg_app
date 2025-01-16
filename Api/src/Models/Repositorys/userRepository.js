@@ -1,4 +1,5 @@
 import { pool } from '../../lib/pgConnection.js'
+import { Validation } from '../Validations/index.js'
 import bcrypt from 'bcrypt'
 
 export class UserRepository {
@@ -7,14 +8,13 @@ export class UserRepository {
   }
 
   async getList () {
-    const result = await this.pool.query('SELECT * FROM users')
+    const result = await this.pool.query('SELECT id, username, user_img FROM users')
     return result.rows
   }
 
   async getById (id) {
     try {
-      const result = await this.pool.query('SELECT * FROM users where (id = $1)', [id])
-
+      const result = await this.pool.query('SELECT id, username, user_img FROM users WHERE (id = $1)', [id])
       return result.rows[0]
     } catch (error) {
       console.error(error)
@@ -22,7 +22,20 @@ export class UserRepository {
     }
   }
 
+  async getByUsername (username) {
+    try {
+      const result = await this.pool.query('SELECT * FROM users WHERE (username = $1)', [username])
+      return result.rows[0]
+    } catch (error) {
+      console.log(error)
+      throw new Error('Something went wrong')
+    }
+  }
+
   async create ({ username, password, userImg }) {
+    Validation.username(username)
+    Validation.password(password)
+    Validation.userImgUrl(userImg)
     if (await this.verifyByUsername(username)) { throw new Error(`The username '${username}' alredy exists`, { cause: { status: 409 } }) }
 
     let result
@@ -40,18 +53,20 @@ export class UserRepository {
     return result.rows[0]
   }
 
-  async update ({ id, userName, userImg }) {
+  async update ({ id, username, userImg }) {
+    Validation.username(username)
+    Validation.userImgUrl(userImg)
     const user = await this.getById(id)
     if (!user) throw new Error('User not found')
-    if (this.verifyByUsername(userName)) throw new Error('Username already exists')
-    const newUser = { userName: userName ?? user.username, userImg }
+    if (this.verifyByUsername(username)) throw new Error('Username already exists')
+    const newUser = { username: username ?? user.username, userImg }
     const result = await this.pool.query(
       `
       UPDATE users 
       SET (username, user_img) VALUES ($2,$3) 
       WHERE id = $1
-      RETURNING *
-      `, [newUser.userName, newUser.userImg])
+      RETURNING id, username, user_img
+      `, [newUser.username, newUser.userImg])
     return result.rows[0]
   }
 
@@ -80,5 +95,16 @@ export class UserRepository {
     console.log(result.rows.length === 0)
     if (result.rows.length === 0) return false
     return true
+  }
+
+  async login (username, password) {
+    Validation.username(username)
+    Validation.password(password)
+    const user = await this.getByUsername(username)
+    if (!user) throw new Error('User not found', { cause: { status: 404 } })
+    const isValid = await bcrypt.compare(password, user.password)
+    if (!isValid) throw new Error('password no valid', { cause: { status: 401 } })
+    const { password: _, ...publicUser } = user
+    return publicUser
   }
 }
