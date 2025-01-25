@@ -35,8 +35,8 @@ export class UserRepository {
   async create ({ username, password, userImg }) {
     Validation.username(username)
     Validation.password(password)
-    Validation.userImgUrl(userImg)
-    if (await this.verifyByUsername(username)) { throw new Error(`The username '${username}' alredy exists`, { cause: { status: 409 } }) }
+    // Validation.userImgUrl(userImg)
+    if (await this.verifyByUsername(username)) { throw new Error(`The username '${username}' alredy exists`, { cause: { statusCode: 409 } }) }
 
     let result
     const client = await this.pool.connect()
@@ -55,7 +55,7 @@ export class UserRepository {
 
   async update ({ id, username, userImg }) {
     Validation.username(username)
-    Validation.userImgUrl(userImg)
+    // Validation.userImgUrl(userImg)
     const user = await this.getById(id)
     if (!user) throw new Error('User not found')
     if (this.verifyByUsername(username)) throw new Error('Username already exists')
