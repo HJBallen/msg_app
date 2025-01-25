@@ -17,6 +17,10 @@ export async function login (req, res) {
   } catch (err) {
     console.log(err)
 
-    res.json(err)
+    if (err.cause?.statusCode !== undefined) {
+      res.status(err.cause.statusCode).json({ statusCode: err.cause.statusCode, message: err.message })
+      return false
+    }
+    res.status(500).json({ statusCode: 500, message: 'Something went wrong' })
   }
 }

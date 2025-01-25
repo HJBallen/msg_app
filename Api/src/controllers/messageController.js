@@ -47,6 +47,10 @@ export async function getUserMessages (req, res) {
     res.status(200).json(result)
   } catch (error) {
     console.error(error)
-    res.status(error.cause.status).json({ statusCode: error.cause.status, message: error.message })
+    if (res.status !== undefined) {
+      res.status(error.cause.status).json({ statusCode: error.cause.status, message: error.message })
+      return false
+    }
+    res.status(500).json({ statusCode: 500, msg: 'Something went wrong' })
   }
 }

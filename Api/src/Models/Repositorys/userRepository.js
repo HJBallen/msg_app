@@ -101,9 +101,9 @@ export class UserRepository {
     Validation.username(username)
     Validation.password(password)
     const user = await this.getByUsername(username)
-    if (!user) throw new Error('User not found', { cause: { status: 404 } })
+    if (!user) throw new Error('User not found', { cause: { statusCode: 404 } })
     const isValid = await bcrypt.compare(password, user.password)
-    if (!isValid) throw new Error('password no valid', { cause: { status: 401 } })
+    if (!isValid) throw new Error('Password no valid', { cause: { statusCode: 401 } })
     const { password: _, ...publicUser } = user
     return publicUser
   }
