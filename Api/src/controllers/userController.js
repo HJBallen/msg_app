@@ -27,9 +27,7 @@ export async function createUser (req, res) {
     const user = await userRepo.create({ username, password, userImg })
     res.status(201).json(user)
   } catch (error) {
-    console.error(error.message, error.cause.status)
-    if (error.cause.status === 409) {
-      res.status(409).json({ message: error.message })
-    }
+    console.error(error.message, error.cause.statusCode)
+    res.status(error.cause.statusCode).json({ message: error.message, statusCode: error.cause.statusCode })
   }
 }
