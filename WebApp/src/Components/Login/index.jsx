@@ -18,17 +18,13 @@ export function Login() {
         body: JSON.stringify(data)
       })
       const jsonRes = await res.json()
-      console.log(jsonRes);
-      
+
       if (jsonRes.statusCode !== undefined){
-        console.log(jsonRes);
         setErrMsg(jsonRes.message)
         setLoginErr(true)
         return false
       }
-      setUsername(jsonRes.username)
-      setUserImg(jsonRes.user_img??"")
-      setIsLogin(true)
+      return jsonRes
     } catch (e) {
       console.log(e);
       return false
@@ -37,10 +33,11 @@ export function Login() {
   async function login(event) {
     event.preventDefault()
     const username =event.target.username.value , password = event.target.password.value
-    console.log(username)
-    console.log(password)
     const res = await postLogin({username,password})
-    console.log(res);
+    if (!res)return false
+    setUsername(res.username)
+    setUserImg(res.user_img??"")
+    setIsLogin(true)
   }
 
   return <>
