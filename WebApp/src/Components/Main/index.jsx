@@ -9,8 +9,6 @@ export function MainApp({isLogin}) {
   const navigate = useNavigate()
 
   useEffect(()=>{
-    console.log('se activo el efecto');
-    
       if (isLogin) {
         navigate('/board')
       }
