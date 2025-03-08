@@ -1,4 +1,7 @@
 import { pool } from '../../lib/pgConnection.js'
+import { UserRepository } from './userRepository.js'
+
+const userRepo = new UserRepository()
 
 export class MessageRepository {
   constructor () {
@@ -22,16 +25,23 @@ export class MessageRepository {
     }
   }
 
-  async create ({ userId, body }) {
-    if (await this.getById(userId) === undefined) throw new Error('User not found', { cause: { status: 404 } })
+  async create ({ username, body }) {
+    if (await userRepo.getByUsername(username) === undefined) throw new Error('User not found', { cause: { status: 404 } })
+    const userId = await userRepo.getByUsername(username).id
+    console.log(userId)
+
     const textQuery = `
       INSERT INTO messages 
-      (userId, body) VALUES ($1,$2)`
+      (userId, body) VALUES ($1,$2) RETURNING body`
     const client = await this.pool.connect()
     try {
       await client.query('BEGIN')
-      await client.query(textQuery, [userId, body])
+      const res = await client.query(textQuery, [userId, body])
+      await client.query('COMMIT')
+      console.log(res)
+      return res.rows[0].body
     } catch (error) {
+      console.log(error)
       await client.query('ROLLBACK')
       throw new Error("Couldn't write message", { cause: { status: 500 } })
     }

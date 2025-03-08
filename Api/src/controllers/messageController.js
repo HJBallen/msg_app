@@ -25,8 +25,10 @@ export async function getMessageById (req, res) {
 
 export async function createMessage (req, res) {
   try {
-    const { userId, body } = req.body
-    const message = await messageRepo.create({ userId, body })
+    const { username, body } = req.body
+    const message = await messageRepo.create({ username, body })
+    console.log(message)
+
     res.status(201).json(message)
   } catch (error) {
     console.error(error.message, error.cause.status)
@@ -34,7 +36,7 @@ export async function createMessage (req, res) {
       res.status(409).json({ message: error.message })
       return false
     }
-    res.status(500).json({ message: error.message })
+    res.status(error.cause.status).json({ message: error.message })
   }
 }
 
