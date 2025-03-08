@@ -7,7 +7,7 @@ import { LoginErrView } from './LoginErrView'
 export function Login() {
   const [loginErr, setLoginErr] = useState(false)
   const [errMsg, setErrMsg] = useState('')
-  const {setUsername, setUserImg, setIsLogin} = useContext(loginContext)
+  const {username,setUsername, setUserImg, setIsLogin} = useContext(loginContext)
   async function postLogin(data) {
     try {
       const res = await fetch(config.BASE_API_URL+"/auth/login",{
@@ -34,9 +34,13 @@ export function Login() {
     event.preventDefault()
     const username =event.target.username.value , password = event.target.password.value
     const res = await postLogin({username,password})
-    if (!res)return false
-    setUsername(res.username)
-    setUserImg(res.user_img??"")
+    if (! res) return false
+    
+    const {user} = res   
+    
+    
+    setUsername(user.username)
+    setUserImg(user.user_img??"")
     setIsLogin(true)
   }
 
