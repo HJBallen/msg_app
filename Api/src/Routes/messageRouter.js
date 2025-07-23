@@ -4,6 +4,6 @@ import { createMessage, getMessageById, getMessagesList, getUserMessages } from 
 export const messageRouter = Router()
 
 messageRouter.get('/', getMessagesList)
+messageRouter.post('/create/', createMessage)
 messageRouter.get('/:id', getMessageById)
 messageRouter.get('/user/:userId', getUserMessages)
-messageRouter.post('/create', createMessage)

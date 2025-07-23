@@ -25,8 +25,9 @@ export async function getMessageById (req, res) {
 
 export async function createMessage (req, res) {
   try {
-    const { username, body } = req.body
-    const message = await messageRepo.create({ username, body })
+    const { username, body, type } = req.body
+
+    const message = await messageRepo.create({ username, body, type })
     console.log(message)
 
     res.status(201).json(message)
