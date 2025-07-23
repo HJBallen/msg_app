@@ -14,7 +14,7 @@ export class UserRepository {
 
   async getById (id) {
     try {
-      const result = await this.pool.query('SELECT id, username, user_img FROM users WHERE (id = $1)', [id])
+      const result = await this.pool.query('SELECT username, user_img FROM users WHERE (id = $1)', [id])
       return result.rows[0]
     } catch (error) {
       console.error(error)
@@ -24,7 +24,7 @@ export class UserRepository {
 
   async getByUsername (username) {
     try {
-      const result = await this.pool.query('SELECT * FROM users WHERE (username = $1)', [username])
+      const result = await this.pool.query('SELECT id, username FROM users WHERE (username = $1)', [username])
       return result.rows[0]
     } catch (error) {
       console.log(error)
@@ -44,7 +44,7 @@ export class UserRepository {
       await client.query('BEGIN')
       const saltRounds = 10
       const hashedPassword = await bcrypt.hash(password, saltRounds)
-      result = await client.query('INSERT INTO users (username, password, user_img) VALUES ($1, $2, $3) RETURNING id,username, user_img', [username, hashedPassword, userImg])
+      result = await client.query('INSERT INTO users (username, password, user_img) VALUES ($1, $2, $3) RETURNING username, user_img', [username, hashedPassword, userImg])
       await client.query('COMMIT')
     } catch (error) {
       await client.query('ROLLBACK')
@@ -65,7 +65,7 @@ export class UserRepository {
       UPDATE users 
       SET (username, user_img) VALUES ($2,$3) 
       WHERE id = $1
-      RETURNING id, username, user_img
+      RETURNING username, user_img
       `, [newUser.username, newUser.userImg])
     return result.rows[0]
   }
