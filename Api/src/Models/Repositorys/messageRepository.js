@@ -25,21 +25,23 @@ export class MessageRepository {
     }
   }
 
-  async create ({ username, body }) {
+  async create ({ username, body, type, content }) {
     if (await userRepo.getByUsername(username) === undefined) throw new Error('User not found', { cause: { status: 404 } })
     const userId = await userRepo.getByUsername(username).id
     console.log(userId)
-
     const textQuery = `
       INSERT INTO messages 
-      (userId, body) VALUES ($1,$2) RETURNING body`
+      (userId, body) VALUES ($1,$2) RETURNING id`
     const client = await this.pool.connect()
     try {
       await client.query('BEGIN')
       const res = await client.query(textQuery, [userId, body])
       await client.query('COMMIT')
-      console.log(res)
-      return res.rows[0].body
+      const msgId = res.rows[0].id
+      if (typeof type !== 'undefined') {
+        await this.createContent(msgId, type, content)
+      }
+      return msgId
     } catch (error) {
       console.log(error)
       await client.query('ROLLBACK')
@@ -75,5 +77,22 @@ export class MessageRepository {
 
     const result = await this.pool.query(query, [userId])
     return result.rows
+  }
+
+  async createContent (msgId, type, content) {
+    if (type.toLocaleLowerCase() === 'text') {
+      return null
+    }
+    const textQuery = `
+      INSERT INTO msg_content (messageId, type, content_url) VALUES ($1, $2, $3)`
+    const client = await this.pool.connect()
+    try {
+      await client.query('BEGIN')
+      await client.query(textQuery, [msgId, type, content])
+      await client.query('COMMIT')
+    } catch (error) {
+      await client.query('ROLLBACK')
+      throw new Error("Couldn't create message content", { cause: { status: 500 } })
+    }
   }
 }
